@@ -5,6 +5,22 @@
 
 #include "shader.h"
 
+typedef char TextureTypes;
+
+enum TextureType : TextureTypes {
+	AMBIENT = 0x01;
+	DIFFUSE = 0x02;
+	SPECULAR = 0x04;
+	NORMAL = 0x08
+};
+
+const std::unordered_map<TextureType, std::string> textureTypeString({
+	{ AMBIENT, "Ambient" },
+	{ DIFFUSE, "Diffuse" },
+	{ SPECULAR, "Specular" },
+	{ NORMAL, "Normal" }
+});
+
 class Material
 {
 public:
@@ -30,13 +46,22 @@ public:
     GLfloat refractionIndex() const;
     void setRefractionIndex(const GLfloat refractionIndex);
 
+	TextureTypes textureTypes() const;
+	std::unordered_map<TextureType, std::string> textures() const;
+	void setTextures(std::unordered_map<TextureType, std::string> textures);
+	void addTexture(TextureType textureType, std::string name);
+
     void checkAmbient();
     void checkDiffuse();
     void checkSpecular();
     void checkColors();
-    void bind(ShaderProgram *shader);
+    
+	void bind(ShaderProgram *shader);
 
 private:
+	TextureTypes m_texturesTypes = 0x00;
+	std::unordered_map<TextureType, std::string> m_textures;
+
     glm::vec3 m_ambient;
     glm::vec3 m_diffuse;
     glm::vec3 m_specular;

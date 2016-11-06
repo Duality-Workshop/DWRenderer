@@ -136,6 +136,23 @@ void Material::setRefractionIndex(const GLfloat refractionIndex) {
         m_refractionIndex = refractionIndex;
 }
 
+TextureTypes Material::textureTypes() const {
+	return m_texturesTypes;
+}
+
+std::unordered_map<TextureType, std::string> Material::textures() const {
+	return m_textures;
+}
+
+void Material::setTextures(std::unordered_map<TextureType, std::string> textures) {
+	m_textures = textures;
+}
+
+void Material::addTexture(TextureType textureType, std::string name) {
+	m_texturesTypes |= textureType;
+	m_textures.insert(textureType, name);
+}
+
 void Material::checkAmbient() {
     if(m_ambient.x < 0.0f)
         m_ambient.x = 0.0f;
