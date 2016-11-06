@@ -7,6 +7,7 @@
 
 #include "shader.h"
 
+#include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -19,13 +20,13 @@ typedef struct Vertex {
 class Mesh
 {
 public:
-	Mesh(vector<Vertex> vertices, vector<GLuint> indices);
+	Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices);
 	~Mesh();
 	void Draw();
 
 private:
-	vector<Vertex> vertices;
-	vector<GLuint> indices;
+	std::vector<Vertex> m_vertices;
+	std::vector<GLuint> m_indices;
 	
 };
 

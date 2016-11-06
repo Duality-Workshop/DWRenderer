@@ -150,7 +150,7 @@ void Material::setTextures(std::unordered_map<TextureType, std::string> textures
 
 void Material::addTexture(TextureType textureType, std::string name) {
 	m_texturesTypes |= textureType;
-	m_textures.insert(textureType, name);
+	m_textures.insert({ textureType, name });
 }
 
 void Material::checkAmbient() {

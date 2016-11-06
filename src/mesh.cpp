@@ -2,8 +2,9 @@
 
 /* TODO */
 
-Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices){
-	// TODO
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices){
+	m_vertices = vertices;
+	m_indices = indices;
 }
 
 Mesh::~Mesh(){

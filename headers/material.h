@@ -2,15 +2,16 @@
 #define MATERIAL_H
 
 #include <glm/glm.hpp>
+#include <unordered_map>
 
 #include "shader.h"
 
 typedef char TextureTypes;
 
 enum TextureType : TextureTypes {
-	AMBIENT = 0x01;
-	DIFFUSE = 0x02;
-	SPECULAR = 0x04;
+	AMBIENT = 0x01,
+	DIFFUSE = 0x02,
+	SPECULAR = 0x04,
 	NORMAL = 0x08
 };
 
