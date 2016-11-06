@@ -2,7 +2,9 @@
 #define TEXTURE
 
 #define GL_GLEXT_PROTOTYPES
-#include <GL/glew.h>
+#ifdef _WIN32
+	#include <GL/glew.h>
+#endif
 
 #include <QImage>
 #include <string>

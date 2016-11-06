@@ -2,7 +2,9 @@
 #define SHADER_H
 
 #define GL_GLEXT_PROTOTYPES
-#include <GL/glew.h>
+#ifdef _WIN32
+	#include <GL/glew.h>
+#endif
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
