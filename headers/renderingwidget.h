@@ -1,8 +1,6 @@
 #ifndef RENDERINGWIDGET_H
 #define RENDERINGWIDGET_H
 
-#define GL_GLEXT_PROTOTYPES
-
 #include "renderer.h"
 
 #include <QtOpenGL/QGLWidget>

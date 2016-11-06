@@ -1,10 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#define GL_GLEXT_PROTOTYPES
-#ifdef _WIN32
-	#include <GL/glew.h>
-#endif
+#include "opengl.h"
 
 // GLM
 #define GLM_FORCE_RADIANS

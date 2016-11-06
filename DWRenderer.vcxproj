@@ -38,6 +38,7 @@
   <ItemGroup>
     <ClInclude Include="headers\camera.h" />
     <ClInclude Include="headers\material.h" />
+    <ClInclude Include="headers\opengl.h" />
     <ClInclude Include="headers\renderer.h" />
     <ClInclude Include="headers\shader.h" />
     <ClInclude Include="headers\texture.h" />
@@ -69,6 +70,9 @@
   <ItemGroup>
     <Image Include="textures\awesomeface.png" />
     <Image Include="textures\container.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists_for_unix.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>

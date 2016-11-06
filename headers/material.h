@@ -1,8 +1,6 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#define GL_GLEXT_PROTOTYPES
-
 #include <glm/glm.hpp>
 
 #include "shader.h"

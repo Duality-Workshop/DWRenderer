@@ -1,12 +1,7 @@
-#ifndef RENDERER
-#define RENDERER
+#ifndef RENDERER_H
+#define RENDERER_H
 
-#define GL_GLEXT_PROTOTYPES
-
-#ifdef _WIN32
-	#define GLEW_STATIC
-	#include <GL/glew.h>
-#endif
+#include "opengl.h"
 
 #include <QTime>
 
@@ -53,5 +48,5 @@ private:
     glm::vec3 m_lightPos;
 };
 
-#endif // RENDERER
+#endif // RENDERER_H
 

@@ -1,10 +1,7 @@
-#ifndef TEXTURE
-#define TEXTURE
+#ifndef TEXTURE_H
+#define TEXTURE_H
 
-#define GL_GLEXT_PROTOTYPES
-#ifdef _WIN32
-	#include <GL/glew.h>
-#endif
+#include "opengl.h"
 
 #include <QImage>
 #include <string>
@@ -32,5 +29,5 @@ private:
     GLenum m_target;
 };
 
-#endif // TEXTURE
+#endif // TEXTURE_H
 

@@ -35,6 +35,9 @@
     <Filter Include="Resource Files\Textures">
       <UniqueIdentifier>{1da464fe-160a-4087-bc46-d3ab4f35cf0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Others">
+      <UniqueIdentifier>{86ec5dfd-7dd1-4b98-ad53-13ce8e1073ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera.cpp">
@@ -81,6 +84,9 @@
     <ClInclude Include="headers\texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\opengl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="headers\renderingwidget.h">
@@ -108,5 +114,10 @@
     <Image Include="textures\container.jpg">
       <Filter>Resource Files\Textures</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists_for_unix.txt">
+      <Filter>Resource Files\Others</Filter>
+    </Text>
   </ItemGroup>
 </Project>
