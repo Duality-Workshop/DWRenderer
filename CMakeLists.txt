@@ -11,8 +11,10 @@ set(CMAKE_AUTORCC ON)
 set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/headers)
 # external libs and tools
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
-# GLM
-set(GLM_INC ${EXTERNAL_DIR}/glm)
+# external headers
+set(EXTERNAL_INCLUDE_DIR ${EXTERNAL_DIR}/headers)
+# Assimp
+set(ASSIMP_LIB ${EXTERNAL_DIR}/libs/libassimp.so)
 
 find_package(OpenGL REQUIRED)
 find_package(Qt5Core REQUIRED)
@@ -32,8 +34,8 @@ FILE(GLOB folder_project_include headers/*.* headers/*/*.*)
 
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 include_directories(${PROJECT_INCLUDE_DIR})
-include_directories(${GLM_INC})
+include_directories(${EXTERNAL_INCLUDE_DIR})
 
 add_executable(${PROJECT_NAME} ${SRC_LIST} ${folder_shader} ${folder_project_include})
 
-target_link_libraries(${PROJECT_NAME} ${Qt5_LIBRARIES} ${OPENGL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${Qt5_LIBRARIES} ${OPENGL_LIBRARIES} ${ASSIMP_LIB})

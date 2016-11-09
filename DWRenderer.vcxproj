@@ -74,7 +74,7 @@
     <Image Include="textures\container.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="CMakeLists_for_unix.txt" />
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
