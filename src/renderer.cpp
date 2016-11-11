@@ -119,7 +119,7 @@ void Renderer::initializeRenderer() {
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    m_lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+    m_light = new Light(glm::vec3(0.5f,0.5f,0.5f), glm::vec3(1.0f,1.0f,1.0f), glm::vec3(0.1f,0.1f,0.1f), glm::vec3(1.2f, 1.0f, 2.0f));
 }
 
 void Renderer::render(glm::mat4 view, glm::mat4 projection) {
@@ -134,11 +134,7 @@ void Renderer::render(glm::mat4 view, glm::mat4 projection) {
 
     m_cubeMaterial->bind(m_cubeShader);
     m_cubeShader->setUniform("viewPos", m_camera->getPosition());
-    // TODO : class Light
-    m_cubeShader->setUniform("light.position", m_lightPos);
-    m_cubeShader->setUniform("light.ambient", glm::vec3(0.1f,0.1f,0.1f));
-    m_cubeShader->setUniform("light.diffuse", glm::vec3(0.5f,0.5f,0.5f));
-    m_cubeShader->setUniform("light.specular", glm::vec3(1.1f,1.0f,1.0f));
+	m_light->bind(m_cubeShader);
 
     glBindVertexArray(m_cubeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -148,7 +144,7 @@ void Renderer::render(glm::mat4 view, glm::mat4 projection) {
     m_lightShader->useShaderProgram();
 
     model = glm::mat4();
-    model = glm::translate(model, m_lightPos);
+    model = glm::translate(model, m_light->position());
     model = glm::scale(model, glm::vec3(0.2f));
     this->bindMatrix(m_lightShader, model, view, projection);
 

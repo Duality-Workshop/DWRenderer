@@ -15,6 +15,7 @@
 #include "shader.h"
 #include "texture.h"
 #include "material.h"
+#include "light.h"
 
 class Renderer
 {
@@ -45,7 +46,7 @@ private:
     Material* m_cubeMaterial;
     GLuint m_lightVAO;
     ShaderProgram *m_lightShader;
-    glm::vec3 m_lightPos;
+    Light *m_light;
 };
 
 #endif // RENDERER_H
