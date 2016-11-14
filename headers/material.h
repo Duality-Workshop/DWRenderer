@@ -6,9 +6,9 @@
 
 #include "shader.h"
 
-typedef char TextureTypes;
+typedef char TextureType;
 
-enum TextureType : TextureTypes {
+enum TextureTypes : TextureType {
 	AMBIENT = 0x01,
 	DIFFUSE = 0x02,
 	SPECULAR = 0x04,
@@ -47,7 +47,7 @@ public:
     GLfloat refractionIndex() const;
     void setRefractionIndex(const GLfloat refractionIndex);
 
-	TextureTypes textureTypes() const;
+	TextureType textureTypes() const;
 	std::unordered_map<TextureType, std::string> textures() const;
 	void setTextures(std::unordered_map<TextureType, std::string> textures);
 	void addTexture(TextureType textureType, std::string name);
@@ -60,7 +60,7 @@ public:
 	void bind(ShaderProgram *shader);
 
 private:
-	TextureTypes m_texturesTypes = 0x00;
+	TextureType m_texturesTypes = 0x00;
 	std::unordered_map<TextureType, std::string> m_textures;
 
     glm::vec3 m_ambient;

@@ -136,7 +136,7 @@ void Material::setRefractionIndex(const GLfloat refractionIndex) {
         m_refractionIndex = refractionIndex;
 }
 
-TextureTypes Material::textureTypes() const {
+TextureType Material::textureTypes() const {
 	return m_texturesTypes;
 }
 
