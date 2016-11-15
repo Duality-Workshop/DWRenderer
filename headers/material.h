@@ -6,6 +6,8 @@
 
 #include "shader.h"
 
+/* Need some refactoring */
+
 typedef char TextureType;
 
 enum TextureTypes : TextureType {
@@ -32,6 +34,8 @@ public:
     Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, GLfloat roughness, GLfloat refractionIndex, GLfloat metallic);
     ~Material();
 
+	std::string name() const;
+	void setName(std::string name);
     glm::vec3 ambient() const;
     void setAmbient(const glm::vec3 ambient);
     glm::vec3 diffuse() const;
@@ -48,6 +52,7 @@ public:
     void setRefractionIndex(const GLfloat refractionIndex);
 
 	TextureType textureTypes() const;
+	void updateTextureTypes(TextureType textType);
 	std::unordered_map<TextureType, std::string> textures() const;
 	void setTextures(std::unordered_map<TextureType, std::string> textures);
 	void addTexture(TextureType textureType, std::string name);
@@ -63,6 +68,7 @@ private:
 	TextureType m_texturesTypes = 0x00;
 	std::unordered_map<TextureType, std::string> m_textures;
 
+	std::string m_name;
     glm::vec3 m_ambient;
     glm::vec3 m_diffuse;
     glm::vec3 m_specular;

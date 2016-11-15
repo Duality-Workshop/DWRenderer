@@ -10,6 +10,14 @@ Texture::Texture(std::string dirPath) {
 Texture::~Texture() {
 }
 
+std::string Texture::name() const {
+	return m_name;
+}
+
+void Texture::setName(std::string name) {
+	m_name = name;
+}
+
 void Texture::redefineDirectory(std::string dirPath){
     m_dirPath = dirPath;
 }

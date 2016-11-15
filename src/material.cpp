@@ -65,6 +65,14 @@ Material::Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, GLf
 Material::~Material() {
 }
 
+std::string Material::name() const {
+	return m_name;
+}
+
+void Material::setName(std::string name) {
+	m_name = name;
+}
+
 glm::vec3 Material::ambient() const {
     return m_ambient;
 }
@@ -138,6 +146,10 @@ void Material::setRefractionIndex(const GLfloat refractionIndex) {
 
 TextureType Material::textureTypes() const {
 	return m_texturesTypes;
+}
+
+void Material::updateTextureTypes(TextureType textType) {
+	m_texturesTypes |= textType;
 }
 
 std::unordered_map<TextureType, std::string> Material::textures() const {

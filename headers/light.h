@@ -3,6 +3,8 @@
 
 #include "shader.h"
 
+/* Need to refactoring same way as Material class */
+
 class Light
 {
 public:

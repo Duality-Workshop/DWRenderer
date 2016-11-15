@@ -6,6 +6,7 @@
 #include "opengl.h"
 
 #include "shader.h"
+#include "material.h"
 
 #include <vector>
 #include <glm/glm.hpp>
@@ -16,6 +17,8 @@ typedef struct Vertex {
 	glm::vec3 normal;
 	glm::vec2 texCoords;
 };
+
+// ADD TEXTURES
 
 class Mesh
 {
@@ -28,6 +31,7 @@ private:
 	std::vector<Vertex> m_vertices;
 	std::vector<GLuint> m_indices;
 	
+	Material *m_material;
 };
 
 #endif // MESH_H
