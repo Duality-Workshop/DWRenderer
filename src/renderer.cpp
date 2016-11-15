@@ -33,8 +33,8 @@ void Renderer::initializeRenderer() {
     m_lightShader->createSimpleProgram("light.vert","light.frag");
 
     /*// Different use of the Shader class
-    ShaderObject* vertexShader = new ShaderObject("../shaders/", "cube.vert", GL_VERTEX_SHADER);
-    ShaderObject* fragmentShader = new ShaderObject("../shaders/", "cube.frag", GL_FRAGMENT_SHADER);
+    ShaderObject* vertexShader = new ShaderObject("shaders/", "cube.vert", GL_VERTEX_SHADER);
+    ShaderObject* fragmentShader = new ShaderObject("shaders/", "cube.frag", GL_FRAGMENT_SHADER);
 
     vertexShader->load();
     fragmentShader->load();
