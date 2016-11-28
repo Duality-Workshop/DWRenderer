@@ -16,11 +16,12 @@ public:
 	void setName(std::string name);
 
     void redefineDirectory(std::string dirPath);
-    void loadFromFile(std::string filePath, GLenum target);
+    bool loadFromFile(std::string filePath, GLenum target);
     void initTexture2D(void *data);
     void useMipMap(GLenum minFilter, GLenum magFilter);
     GLuint getId() const;
     GLenum getTarget() const;
+	void bind();
 
 private:
     std::string m_dirPath;

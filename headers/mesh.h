@@ -12,13 +12,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-typedef struct Vertex {
+struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
 	glm::vec2 texCoords;
 };
-
-// ADD TEXTURES
 
 class Mesh
 {
@@ -30,8 +28,10 @@ public:
 private:
 	std::vector<Vertex> m_vertices;
 	std::vector<GLuint> m_indices;
-	
-	Material *m_material;
+
+	GLuint m_VBO, m_VAO, m_EBO;
+
+	void setupMesh();
 };
 
 #endif // MESH_H

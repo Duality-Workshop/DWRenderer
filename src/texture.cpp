@@ -22,7 +22,7 @@ void Texture::redefineDirectory(std::string dirPath){
     m_dirPath = dirPath;
 }
 
-void Texture::loadFromFile(std::string filePath, GLenum target) {
+bool Texture::loadFromFile(std::string filePath, GLenum target) {
     QImage img;
     QImage glImg;
 
@@ -30,11 +30,13 @@ void Texture::loadFromFile(std::string filePath, GLenum target) {
 
     if(!img.load(m_filePath.c_str())) {
         std::cerr << "ERROR::LOADING::IMAGE:" << m_filePath << std::endl;
+		return false;
     }
 
     glImg = QGLWidget::convertToGLFormat(img);
     if(glImg.isNull()) {
         std::cerr << "ERROR::CONVERSION::TO::GL::FORMAT" << std::endl;
+		return false;
     }
 
     m_width = glImg.width();
@@ -51,6 +53,8 @@ void Texture::loadFromFile(std::string filePath, GLenum target) {
     if(target == GL_TEXTURE_2D)
         this->initTexture2D(glImg.bits());
     /* Other type of target => Later */
+	
+	return true;
 }
 
 void Texture::initTexture2D(void* data) {
@@ -75,4 +79,8 @@ GLuint Texture::getId() const {
 
 GLenum Texture::getTarget() const {
     return m_target;
+}
+
+void Texture::bind() {
+	glBindTexture(GL_TEXTURE_2D, m_id);
 }

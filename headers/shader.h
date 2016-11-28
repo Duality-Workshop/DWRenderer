@@ -1,36 +1,47 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include "opengl.h" 
+#include "opengl.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include <string>
 #include <vector>
+#include <sstream>
+
+class Model;
 
 class ShaderObject
 {
 public:
-    ShaderObject(std::string dirPath, std::string fileName, GLenum type);
-    ~ShaderObject();
+	ShaderObject(std::string dirPath, std::string fileName, GLenum type);
+	~ShaderObject();
 
-    void deleteShader();
-    void redefineDirectory(std::string pathDirectory);
-    void load();
-    GLuint getId() const;
-    GLuint getType() const;
-    std::string &getFileName();
-    int check();
-    void printShaderInfoLog(GLint shader);
+	void deleteShader();
+	void redefineDirectory(std::string pathDirectory);
+	void load();
+	void load(Model *model);
+	GLuint getId() const;
+	GLuint getType() const;
+	std::string &getFileName();
+	Model *getModel();
+	bool getModelPresent();
+	void resetShaderStream();
+	int check();
+	void printShaderInfoLog(GLint shader);
 
 private:
-    GLuint m_id;
-    std::string m_fileName;
-    std::string m_dirPath;
-    GLuint m_type;
+	GLuint m_id;
+	std::string m_fileName;
+	std::string m_dirPath;
+	GLuint m_type;
+	std::stringstream m_shaderStream;
+	Model *m_model;
+	bool m_model_Present;
 
-    void compile();
+	std::string setDefines(Model *model);
+	void compile();
 };
 
 class ShaderProgram

@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "shader.h"
+#include "texture.h"
 
 /* Need some refactoring */
 
@@ -53,9 +54,14 @@ public:
 
 	TextureType textureTypes() const;
 	void updateTextureTypes(TextureType textType);
-	std::unordered_map<TextureType, std::string> textures() const;
-	void setTextures(std::unordered_map<TextureType, std::string> textures);
-	void addTexture(TextureType textureType, std::string name);
+	std::unordered_map<TextureType, std::string> texturesName() const;
+	void setTexturesName(std::unordered_map<TextureType, std::string> texturesName);
+	std::vector<TextureType> keysTextures();
+	void addTextureTypeName(TextureType textureType, std::string name);
+	std::unordered_map<std::string, Texture> textures() const;
+	void setTextures(std::unordered_map<std::string, Texture> textures);
+	void addTexture(std::string name, Texture *texture);
+
 
     void checkAmbient();
     void checkDiffuse();
@@ -66,7 +72,8 @@ public:
 
 private:
 	TextureType m_texturesTypes = 0x00;
-	std::unordered_map<TextureType, std::string> m_textures;
+	std::unordered_map<TextureType, std::string> m_texturesName;
+	std::unordered_map<std::string, Texture> m_textures;
 
 	std::string m_name;
     glm::vec3 m_ambient;

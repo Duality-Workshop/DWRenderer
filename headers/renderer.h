@@ -16,6 +16,7 @@
 #include "texture.h"
 #include "material.h"
 #include "light.h"
+#include "model.h"
 
 class Renderer
 {
@@ -40,10 +41,10 @@ private:
     Camera *m_camera;
 
     // Object(s) & Light(s)
-    GLuint m_VBO;
-    GLuint m_cubeVAO;
-    ShaderProgram *m_cubeShader;
-    Material* m_cubeMaterial;
+    ShaderProgram *m_baseShader;
+	Model *m_model;
+
+	GLuint m_VBO;
     GLuint m_lightVAO;
     ShaderProgram *m_lightShader;
     Light *m_light;

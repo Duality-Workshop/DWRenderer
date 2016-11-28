@@ -112,16 +112,16 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\cube.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="shaders\cube.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="shaders\light.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="shaders\light.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\base.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\base.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

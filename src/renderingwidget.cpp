@@ -262,6 +262,6 @@ void RenderingWidget::wheelEvent(QWheelEvent *e) {
 }
 
 void RenderingWidget::showFps() {
-    std::cout << m_fps << std::endl;
+    //std::cout << m_fps << std::endl;
     m_fps = 0.0f;
 }

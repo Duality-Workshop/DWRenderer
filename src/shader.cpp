@@ -1,8 +1,11 @@
 #include "shader.h"
 
+#include "material.h"
+#include "model.h"
+
 #include <iostream>
 #include <fstream>
-#include <sstream>
+#include <algorithm>
 
 ShaderProgram::ShaderProgram(std::string dirPath) {
     m_dirPath = dirPath;
@@ -57,15 +60,19 @@ void ShaderProgram::link() {
     this->check();
 }
 
-void ShaderProgram::reload() {
+void ShaderProgram::reload() { // Modify for the defines
     std::cout << "Reload shaders..." << std::endl;
     bool ok = true;
 
     for (unsigned int i = 0; ok && i < m_shaderObjects.size(); ++i) {
         glDetachShader(m_id, m_shaderObjects[i]->getId());
         m_shaderObjects[i]->deleteShader();
+		m_shaderObjects[i]->resetShaderStream();
         std::cout << m_shaderObjects[i]->getFileName() << std::endl;
-        m_shaderObjects[i]->load();
+		if (m_shaderObjects[i]->getModelPresent()) {
+			m_shaderObjects[i]->load(m_shaderObjects[i]->getModel());
+		} else 
+			m_shaderObjects[i]->load();
         ok |= m_shaderObjects[i]->check();
     }
 
@@ -161,9 +168,39 @@ ShaderObject::ShaderObject(std::string dirPath, std::string fileName, GLenum typ
     m_fileName = fileName;
     m_dirPath = dirPath;
     m_type = type;
+	m_model_Present = false;
 }
 
 ShaderObject::~ShaderObject() {
+}
+
+std::string ShaderObject::setDefines(Model *model) {
+	std::string shaderDefine = "";
+	std::vector<TextureType> texturesType;
+
+	// Get version GLSL
+	std::string v;
+	const GLubyte *versionCore = glGetString(GL_SHADING_LANGUAGE_VERSION);
+	for (int i = 0; i < 4; ++i)
+		if (versionCore[i] != '.')
+			v += versionCore[i];
+
+	shaderDefine += "#version " + v + " core\n\n";
+	
+	texturesType = model->material()->keysTextures();
+	
+	if(model->material()->texturesName().size() > 0) {
+		if (std::find(texturesType.begin(), texturesType.end(), AMBIENT) != texturesType.end())
+			shaderDefine += "#define AMBIENT_MAP\n";
+		if (std::find(texturesType.begin(), texturesType.end(), DIFFUSE) != texturesType.end())
+			shaderDefine += "#define DIFFUSE_MAP\n";
+		if (std::find(texturesType.begin(), texturesType.end(), SPECULAR) != texturesType.end())
+			shaderDefine += "#define SPECULAR_MAP\n";
+		if (std::find(texturesType.begin(), texturesType.end(), NORMAL) != texturesType.end())
+			shaderDefine += "#define NORMAL_MAP\n";
+	}
+
+	return shaderDefine;
 }
 
 void ShaderObject::deleteShader() {
@@ -179,17 +216,16 @@ void ShaderObject::load() {
     std::string fileName;
     std::string shaderCode;
     std::ifstream shaderFile;
-    const GLchar* sShaderCode;
+    const GLchar* sShaderCode = "";
 
     fileName = m_dirPath + m_fileName;
 
     shaderFile.exceptions(std::ifstream::badbit);
     try {
         shaderFile.open(fileName);
-        std::stringstream shaderStream;
-        shaderStream << shaderFile.rdbuf();
+        m_shaderStream << shaderFile.rdbuf();
         shaderFile.close();
-        shaderCode = shaderStream.str();
+        shaderCode = m_shaderStream.str();
     }
     catch(std::ifstream::failure e) {
         std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESSFULY_READ" << std::endl;
@@ -201,6 +237,16 @@ void ShaderObject::load() {
     glShaderSource(m_id, 1, &sShaderCode, NULL);
 
     this->compile();
+}
+
+void ShaderObject::load(Model *model) {
+	if (!this->m_model_Present) {
+		m_model = model;
+		m_model_Present = true;
+	}
+	m_shaderStream << setDefines(model).c_str();
+	m_shaderStream << "\n";
+	this->load();
 }
 
 void ShaderObject::compile() {
@@ -230,6 +276,19 @@ GLuint ShaderObject::getType() const {
 
 std::string &ShaderObject::getFileName() {
     return m_fileName;
+}
+
+Model *ShaderObject::getModel() {
+	return m_model;
+}
+
+bool ShaderObject::getModelPresent() {
+	return m_model_Present;
+}
+
+void ShaderObject::resetShaderStream() {
+	m_shaderStream.str("");
+	m_shaderStream.clear();
 }
 
 void ShaderObject::printShaderInfoLog(GLint shader) {

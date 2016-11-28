@@ -17,6 +17,10 @@ void Model::Draw() {
 		this->m_meshes[i].Draw();
 }
 
+Material *Model::material() const {
+	return m_material;
+}
+
 void Model::loadModel(std::string path) {
 	Assimp::Importer import;
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -89,27 +93,28 @@ Mesh Model::processMesh(aiMesh *asMesh, const aiScene *scene) {
 	mesh = new Mesh(vertices, indices);
 
 	// Process material
+	m_material = new Material();
 	if (asMesh->mMaterialIndex >= 0) {
 		aiMaterial *material = scene->mMaterials[asMesh->mMaterialIndex];
 
 		//Constants
 		aiString name;
 		material->Get(AI_MATKEY_NAME, name);
-		mesh->m_material->setName(name);
+		this->m_material->setName(aiToGLM(name));
 
 		aiColor3D color(0.f, 0.f, 0.f);
 		material->Get(AI_MATKEY_COLOR_AMBIENT, color);
-		mesh->m_material->setAmbient(aiToGLM(color));
+		this->m_material->setAmbient(aiToGLM(color));
 
 		material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-		mesh->m_material->setDiffuse(aiToGLM(color));
+		this->m_material->setDiffuse(aiToGLM(color));
 
 		material->Get(AI_MATKEY_COLOR_SPECULAR, color);
-		mesh->m_material->setSpecular(aiToGLM(color));
+		this->m_material->setSpecular(aiToGLM(color));
 
 		GLfloat shininess = 0;
 		material->Get(AI_MATKEY_SHININESS, shininess);
-		mesh->m_material->setShininess(shininess);
+		this->m_material->setShininess(shininess);
 
 		// Textures
 		loadMaterialTextures(material, mesh, aiTextureType_AMBIENT, TextureTypes::AMBIENT);
@@ -118,17 +123,17 @@ Mesh Model::processMesh(aiMesh *asMesh, const aiScene *scene) {
 		loadMaterialTextures(material, mesh, aiTextureType_NORMALS, TextureTypes::NORMAL);
 		
 		// The Height Map can be the Normal Map
-		if (!(mesh->m_material->m_texturesTypes & TextureTypes::NORMAL)) {
+		if (!(this->m_material->textureTypes() & TextureTypes::NORMAL)) {
 			loadMaterialTextures(material, mesh, aiTextureType_HEIGHT, TextureTypes::NORMAL);
 		}
 
 		// If there Diffuse Map but no Ambient Map => Ambient Map = Diffuse Map
-		if ((mesh->m_material->m_texturesTypes & TextureTypes::DIFFUSE) && !(mesh->m_material->m_texturesTypes & TextureTypes::AMBIENT)) {
+		if ((this->m_material->textureTypes() & TextureTypes::DIFFUSE) && !(this->m_material->textureTypes() & TextureTypes::AMBIENT)) {
 			loadMaterialTextures(material, mesh, aiTextureType_DIFFUSE, TextureTypes::AMBIENT);
 		}
 	}
 
-	return ;
+	return *mesh;
 }
 
 void Model::loadMaterialTextures(aiMaterial *mat, Mesh *mesh, aiTextureType type, TextureType typeName) {
@@ -141,17 +146,30 @@ void Model::loadMaterialTextures(aiMaterial *mat, Mesh *mesh, aiTextureType type
 		if (name.size() < 4)
 			return;
 
-		auto tex = std::find(mesh->m_material->m_textures.begin(),
-			mesh->m_material->m_textures.end(),
-			name);
+		//const auto tex = this->m_material->textures().find(name);
 		// Texture not already loaded ?
-		if (tex == mesh->m_material->m_textures.end()) {
+		/*if (tex == this->m_material->textures().end()) {
+			std::cout << "texture pas chargee" << std::endl;
 			Texture *texture = new Texture(m_directory);
-			if (texture->loadFromFile("/" + str.C_Str(),GL_TEXTURE_2D)) {
+			if (texture->loadFromFile("/" + name, GL_TEXTURE_2D)) {
+				std::cout << "Texture chargee depuis le fichier" << std::endl;
 				texture->setName(name);
-				// MODIFY MESH CLASS FOR PUT TEXTURES
-				mesh->m_material->addTexture(typeName, name);
-				mesh->m_material->updateTextureTypes(typeName);
+				this->m_material->addTexture(name, texture);
+				this->m_material->addTextureTypeName(typeName, name);
+				this->m_material->updateTextureTypes(typeName);
+			}
+		}*/
+		try {
+			const auto& ele = this->m_material->textures().at(name);
+			;
+		}
+		catch (std::out_of_range& e) {
+			Texture *texture = new Texture(m_directory);
+			if (texture->loadFromFile("/" + name, GL_TEXTURE_2D)) {
+				texture->setName(name);
+				this->m_material->addTexture(name, texture);
+				this->m_material->addTextureTypeName(typeName, name);
+				this->m_material->updateTextureTypes(typeName);
 			}
 		}
 	}
@@ -174,4 +192,11 @@ glm::vec3 Model::aiToGLM(const aiVector3D &vec) {
 
 glm::vec3 Model::aiToGLM(const aiColor3D &color) {
 	return glm::vec3(color.r, color.g, color.b);
+}
+
+std::string Model::aiToGLM(const aiString &string) {
+	std::string s;
+	for (int i = 0; i < string.length; ++i)
+		s += string.data[i];
+	return s;
 }

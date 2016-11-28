@@ -152,17 +152,37 @@ void Material::updateTextureTypes(TextureType textType) {
 	m_texturesTypes |= textType;
 }
 
-std::unordered_map<TextureType, std::string> Material::textures() const {
+std::unordered_map<TextureType, std::string> Material::texturesName() const {
+	return m_texturesName;
+}
+
+void Material::setTexturesName(std::unordered_map<TextureType, std::string> texturesName) {
+	m_texturesName = texturesName;
+}
+
+std::vector<TextureType> Material::keysTextures() {
+	std::vector<TextureType> keys;
+	keys.reserve(m_texturesName.size());
+	for (auto elem : m_texturesName)
+		keys.push_back(elem.first);
+	return keys;
+}
+
+void Material::addTextureTypeName(TextureType textureType, std::string name) {
+	m_texturesTypes |= textureType;
+	m_texturesName.insert({ textureType, name });
+}
+
+std::unordered_map<std::string, Texture> Material::textures() const {
 	return m_textures;
 }
 
-void Material::setTextures(std::unordered_map<TextureType, std::string> textures) {
+void Material::setTextures(std::unordered_map<std::string, Texture> textures) {
 	m_textures = textures;
 }
 
-void Material::addTexture(TextureType textureType, std::string name) {
-	m_texturesTypes |= textureType;
-	m_textures.insert({ textureType, name });
+void Material::addTexture(std::string name, Texture *texture) {
+	m_textures.insert({ name, *texture });
 }
 
 void Material::checkAmbient() {
@@ -199,8 +219,38 @@ void Material::checkColors() {
 }
 
 void Material::bind(ShaderProgram *shader) {
-    shader->setUniform("material.ambient", m_ambient);
-    shader->setUniform("material.diffuse", m_diffuse);
-    shader->setUniform("material.specular", m_specular);
-    shader->setUniform("material.shininess", m_shininess);
+	GLuint textureCount = 0;
+	std::string name;
+	// TODO CHECK WHY THE TEXTURE NOT BIND
+	if (m_texturesTypes & AMBIENT) {
+		glActiveTexture(GL_TEXTURE0 + textureCount);
+		shader->setUniform("tex_ambient", textureCount);
+		name = m_texturesName.at(AMBIENT).c_str();
+		m_textures.at(name).bind();
+		++textureCount;
+	} else
+		shader->setUniform("p_ambient", m_ambient);
+
+	if (m_texturesTypes & DIFFUSE) {
+		glActiveTexture(GL_TEXTURE0 + textureCount);
+		shader->setUniform("tex_diffuse", textureCount);
+		name = m_texturesName.at(DIFFUSE).c_str();
+		m_textures.at(name).bind();
+		++textureCount;
+	} else
+		shader->setUniform("p_diffuse", m_diffuse);
+
+	if (m_texturesTypes & SPECULAR) {
+		glActiveTexture(GL_TEXTURE0 + textureCount);
+		shader->setUniform("tex_specular", textureCount);
+		name = m_texturesName.at(SPECULAR).c_str();
+		m_textures.at(name).bind();
+		++textureCount;
+	} else
+	    shader->setUniform("p_specular", m_specular);
+
+	if (textureCount > 0)
+		glActiveTexture(GL_TEXTURE0);
+
+    shader->setUniform("shininess", m_shininess);
 }
