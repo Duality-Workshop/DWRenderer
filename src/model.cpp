@@ -53,7 +53,6 @@ Mesh Model::processMesh(aiMesh *asMesh, const aiScene *scene) {
 	for (GLuint i = 0; i < asMesh->mNumVertices; i++) {
 		Vertex vertex;
 		glm::vec3 vector;
-		Mesh;
 		
 		// Position
 		vector.x = asMesh->mVertices[i].x;
