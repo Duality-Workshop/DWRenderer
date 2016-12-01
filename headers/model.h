@@ -19,7 +19,7 @@
 class Model
 {
 public:
-	Model(GLchar* path);
+	Model(std::string path);
 	~Model();
 
 	void Draw();

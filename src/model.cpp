@@ -5,7 +5,7 @@
 #include <iostream>
 #include <algorithm>
 
-Model::Model(GLchar * path) {
+Model::Model(std::string path) {
 	this->loadModel(path);
 }
 
@@ -195,7 +195,7 @@ glm::vec3 Model::aiToGLM(const aiColor3D &color) {
 
 std::string Model::aiToGLM(const aiString &string) {
 	std::string s;
-	for (int i = 0; i < string.length; ++i)
+	for (unsigned int i = 0; i < string.length; ++i)
 		s += string.data[i];
 	return s;
 }
