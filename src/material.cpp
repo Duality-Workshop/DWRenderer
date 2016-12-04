@@ -29,13 +29,13 @@ Material::Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, GLf
     m_specular = specular;
     checkColors();
 
-    if(roughness < 0.0f)
-        m_roughness = 0.0f;
+    if(roughness <= 0.0f)
+        m_roughness = 0.01f;
     else
         m_roughness = roughness;
 
-    if(refractionIndex < 0.0f)
-        m_refractionIndex = 0.0f;
+    if(refractionIndex <= 0.0f)
+        m_refractionIndex = 0.01f;
     else
         m_refractionIndex = refractionIndex;
 }
@@ -46,18 +46,18 @@ Material::Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, GLf
     m_specular = specular;
     checkColors();
 
-    if(roughness < 0.0f)
-        m_roughness = 0.0f;
+    if(roughness <= 0.0f)
+        m_roughness = 0.01f;
     else
         m_roughness = roughness;
 
-    if(refractionIndex < 0.0f)
-        m_refractionIndex = 0.0f;
+    if(refractionIndex <= 0.0f)
+        m_refractionIndex = 0.01f;
     else
         m_refractionIndex = refractionIndex;
 
-    if(metallic < 0.0f)
-        m_metallic = 0.0f;
+    if(metallic <= 0.0f)
+        m_metallic = 0.01f;
     else
         m_metallic = metallic;
 }
@@ -221,7 +221,6 @@ void Material::checkColors() {
 void Material::bind(ShaderProgram *shader) {
 	GLuint textureCount = 0;
 	std::string name;
-	// TODO CHECK WHY THE TEXTURE NOT BIND
 	if (m_texturesTypes & AMBIENT) {
 		glActiveTexture(GL_TEXTURE0 + textureCount);
 		shader->setUniform("tex_ambient", textureCount);
