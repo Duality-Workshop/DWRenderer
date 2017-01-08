@@ -124,6 +124,18 @@ void ShaderProgram::setUniform(const char *name, float value) {
     glUniform1f(glGetUniformLocation(m_id, name), value);
 }
 
+void ShaderProgram::setUniform(const char *name, int value) {
+	glUniform1i(glGetUniformLocation(m_id, name), value);
+}
+
+void ShaderProgram::setUniform(const char *name, unsigned int value) {
+	glUniform1i(glGetUniformLocation(m_id, name), value);
+}
+
+void ShaderProgram::setUniform(const char *name, bool value) {
+	glUniform1i(glGetUniformLocation(m_id, name), value);
+}
+
 void ShaderProgram::setUniform(const char *name, glm::vec2 value) {
     glUniform2fv(glGetUniformLocation(m_id, name), 1, glm::value_ptr(value));
 }
@@ -232,6 +244,9 @@ void ShaderObject::load() {
     }
 
     sShaderCode = shaderCode.c_str();
+
+	// For debug
+	//std::cout << sShaderCode << std::endl;
 
     m_id = glCreateShader(m_type);
     glShaderSource(m_id, 1, &sShaderCode, NULL);

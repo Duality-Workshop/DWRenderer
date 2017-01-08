@@ -3,6 +3,9 @@
 #include <QGLWidget>
 #include <iostream>
 
+Texture::Texture() {
+}
+
 Texture::Texture(std::string dirPath) {
     m_dirPath = dirPath;
 }
@@ -42,27 +45,27 @@ bool Texture::loadFromFile(std::string filePath, GLenum target) {
     m_width = glImg.width();
     m_height = glImg.height();
 
-    m_format = GL_RGB;
+    m_formatImg = GL_RGB;
     if(glImg.hasAlphaChannel()) {
-        m_format = GL_RGBA;
+        m_formatImg = GL_RGBA;
     }
 
     m_target = target;
     glBindTexture(m_target, 0);
 
     if(target == GL_TEXTURE_2D)
-        this->initTexture2D(glImg.bits());
+        this->initTexture2D(glImg.bits(), m_formatImg);
     /* Other type of target => Later */
 	
 	return true;
 }
 
-void Texture::initTexture2D(void* data) {
+void Texture::initTexture2D(void* data, GLenum format) {
     glGenTextures(1, &m_id);
     glBindTexture(m_target, m_id);
     glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(m_target, 0, m_format, m_width, m_height, 0, m_format, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(m_target, 0, format, m_width, m_height, 0, m_formatImg, GL_UNSIGNED_BYTE, data);
     glBindTexture(m_target, 0);
 }
 
@@ -79,6 +82,22 @@ GLuint Texture::getId() const {
 
 GLenum Texture::getTarget() const {
     return m_target;
+}
+
+void Texture::setTarget(GLenum target) {
+	m_target = target;
+}
+
+void Texture::setFormat(GLenum format) {
+	m_formatImg = format;
+}
+
+void Texture::setWidth(GLsizei width) {
+	m_width = width;
+}
+
+void Texture::setHeight(GLsizei height) {
+	m_height = height;
 }
 
 void Texture::bind() {

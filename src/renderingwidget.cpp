@@ -26,7 +26,7 @@ RenderingWidget::RenderingWidget(const QGLFormat & format, QWidget * parent)
     m_fullscreen = false;
     m_wireframe = false;
 
-    // Camera & Events for movement
+    // Camera & Events for movement => Move to renderer
     m_camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
     m_camera->setSpeed(5.0f);
     m_camera->setMouseSensitivity(0.5f);
@@ -112,6 +112,30 @@ void RenderingWidget::keyPressEvent(QKeyEvent *e) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
         break;
+
+		case Qt::Key_H:
+			if (!m_renderer->getHdr()) {
+				std::cout << "HDR on" << std::endl;
+				m_renderer->setHdr(true);
+			}
+			else {
+				std::cout << "HDR off" << std::endl;
+				m_renderer->setHdr(false);
+			}
+			m_renderer->reload();
+		break;
+
+		case Qt::Key_B:
+			if (!m_renderer->bloom()) {
+				std::cout << "Bloom on" << std::endl;
+				m_renderer->setBloom(true);
+			}
+			else {
+				std::cout << "Bloom off" << std::endl;
+				m_renderer->setBloom(false);
+			}
+			m_renderer->reload();
+		break;
 
         case Qt::Key_C:
             m_renderer->getCamera()->initCamera();

@@ -62,6 +62,9 @@ public:
     int check();
     void printProgramInfoLog(GLint program);
     void setUniform(const char* name, float value);
+	void setUniform(const char* name, int value);
+	void setUniform(const char* name, unsigned int value);
+	void setUniform(const char* name, bool value);
     void setUniform(const char* name, glm::vec2 value);
     void setUniform(const char* name, glm::vec3 value);
     void setUniform(const char* name, glm::vec4 value);

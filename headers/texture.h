@@ -9,6 +9,7 @@
 class Texture
 {
 public:
+	Texture();
     Texture(std::string dirPath);
     ~Texture();
 
@@ -17,10 +18,14 @@ public:
 
     void redefineDirectory(std::string dirPath);
     bool loadFromFile(std::string filePath, GLenum target);
-    void initTexture2D(void *data);
+    void initTexture2D(void *data, GLenum format);
     void useMipMap(GLenum minFilter, GLenum magFilter);
     GLuint getId() const;
     GLenum getTarget() const;
+	void setTarget(GLenum target);
+	void setFormat(GLenum format);
+	void setWidth(GLsizei width);
+	void setHeight(GLsizei height);
 	void bind();
 
 private:
@@ -30,7 +35,7 @@ private:
     GLuint m_id;
     GLsizei m_width;
     GLsizei m_height;
-    GLenum m_format;
+    GLenum m_formatImg;
     GLenum m_target;
 };
 

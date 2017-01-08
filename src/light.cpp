@@ -51,10 +51,10 @@ void Light::setAmbient(glm::vec3 val) {
 	m_ambient = val;
 }
 
-void Light::bind(ShaderProgram *shader) {
-	shader->setUniform("light.position", m_position);
-	shader->setUniform("light.ambient", m_ambient);
-	shader->setUniform("light.diffuse", m_diffuse);
-	shader->setUniform("light.specular", m_specular);
+void Light::bind(ShaderProgram *shader, GLuint i) {
+	shader->setUniform(("lights[" + std::to_string(i) + "].position").c_str(), m_position);
+	shader->setUniform(("lights[" + std::to_string(i) + "].ambient").c_str(), m_ambient);
+	shader->setUniform(("lights[" + std::to_string(i) + "].diffuse").c_str(), m_diffuse);
+	shader->setUniform(("lights[" + std::to_string(i) + "].specular").c_str(), m_specular);
 }
 

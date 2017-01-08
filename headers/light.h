@@ -22,7 +22,7 @@ public:
 	glm::vec3 ambient() const;
 	void setAmbient(glm::vec3 val);
 
-	void bind(ShaderProgram *shader);
+	void bind(ShaderProgram *shader, GLuint i);
 
 private:
 	glm::vec3 m_position;

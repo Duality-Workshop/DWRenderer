@@ -32,11 +32,20 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{5e653bce-3295-435b-8171-5a07fbec4d36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Textures">
-      <UniqueIdentifier>{1da464fe-160a-4087-bc46-d3ab4f35cf0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Others">
       <UniqueIdentifier>{86ec5dfd-7dd1-4b98-ad53-13ce8e1073ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models">
+      <UniqueIdentifier>{c3abf7c2-4fb8-4406-a36d-6f9f9f476880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\Astroboy">
+      <UniqueIdentifier>{37e3e403-54da-4089-9858-ad492c55ceb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Textures_simple">
+      <UniqueIdentifier>{1da464fe-160a-4087-bc46-d3ab4f35cf0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models\Astroboy\Textures">
+      <UniqueIdentifier>{749f665f-3cac-4810-8ea8-cce708489d71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +85,9 @@
     <ClCompile Include="src\model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\shapes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\camera.h">
@@ -105,6 +117,9 @@
     <ClInclude Include="headers\model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\shapes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="headers\renderingwidget.h">
@@ -124,13 +139,31 @@
     <None Include="shaders\base.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="Resources\Astroboy\astroboy.dae">
+      <Filter>Resource Files\Models\Astroboy</Filter>
+    </None>
+    <None Include="shaders\blur.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\blur.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\hdr_effects.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\hdr_effects.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\awesomeface.png">
-      <Filter>Resource Files\Textures</Filter>
+      <Filter>Resource Files\Textures_simple</Filter>
     </Image>
     <Image Include="textures\container.jpg">
-      <Filter>Resource Files\Textures</Filter>
+      <Filter>Resource Files\Textures_simple</Filter>
+    </Image>
+    <Image Include="Resources\Astroboy\boy_10.png">
+      <Filter>Resource Files\Models\Astroboy\Textures</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

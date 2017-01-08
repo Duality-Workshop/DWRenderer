@@ -36,6 +36,7 @@
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\renderingwidget.cpp" />
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\shapes.cpp" />
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +48,7 @@
     <ClInclude Include="headers\opengl.h" />
     <ClInclude Include="headers\renderer.h" />
     <ClInclude Include="headers\shader.h" />
+    <ClInclude Include="headers\shapes.h" />
     <ClInclude Include="headers\texture.h" />
     <CustomBuild Include="headers\renderingwidget.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing renderingwidget.h...</Message>
@@ -68,12 +70,18 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Astroboy\astroboy.dae" />
     <None Include="shaders\base.frag" />
     <None Include="shaders\base.vert" />
+    <None Include="shaders\blur.frag" />
+    <None Include="shaders\blur.vert" />
+    <None Include="shaders\hdr_effects.frag" />
+    <None Include="shaders\hdr_effects.vert" />
     <None Include="shaders\light.frag" />
     <None Include="shaders\light.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\Astroboy\boy_10.png" />
     <Image Include="textures\awesomeface.png" />
     <Image Include="textures\container.jpg" />
   </ItemGroup>

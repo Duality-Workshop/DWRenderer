@@ -1,4 +1,6 @@
-out vec4 color;
+//out vec4 color;
+layout (location=0) out vec4 color;
+layout (location=1) out vec4 brightColor;
 
 in vec3 Normal;
 in vec3 FragPos;
@@ -35,7 +37,7 @@ struct Material {
     float shininess;
 };
 
-uniform Light light;
+uniform Light lights[2];
 
 uniform vec3 viewPos;
 
@@ -75,25 +77,42 @@ void main()
 #else
     vec3 norm = normalize(Normal);
 #endif
-    vec3 lightDir = normalize(light.position - FragPos);
-    vec3 viewDir = normalize(viewPos - FragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);
+	vec3 lightning = vec3(0.0f);
+	for(int i = 0; i < 2; ++i) {
+		vec3 lightDir = normalize(lights[i].position - FragPos);
+		vec3 viewDir = normalize(viewPos - FragPos);
+		vec3 reflectDir = reflect(-lightDir, norm);
 
-    // Ambient
-    vec3 ambient = material.ambient * light.ambient;
+		// Ambient
+		vec3 ambient = material.ambient * lights[i].ambient;
 
-    // Diffuse
-    float diff = clamp(dot(lightDir, norm), 0.0, 1.0);
-    vec3 diffuse = diff * material.diffuse * light.diffuse;
+		// Diffuse
+		float diff = clamp(dot(lightDir, norm), 0.0, 1.0);
+		vec3 diffuse = diff * material.diffuse * lights[i].diffuse;
 
-    // Specular
-    float spec = pow(clamp(dot(viewDir, reflectDir), 0.0, 1.0), 32);
-    vec3 specular = spec * material.specular * light.specular;
+		// Specular
+		float spec = pow(clamp(dot(viewDir, reflectDir), 0.0, 1.0), 32);
+		vec3 specular = spec * material.specular * lights[i].specular;
 
-    vec3 result = (diffuse + specular + ambient);
-    color = vec4(result, 1.0f);
+		vec3 result = (diffuse + specular + ambient);
+		
+		// Attenuation (use quadratic as we have gamma correction)
+        float dist = length(FragPos - lights[i].position);
+		result *= 1.0f / (dist * dist);
+		lightning += result;
+	}
+
+	// Check whether result is higher than some threshold, if so, output as bloom threshold color
+    float brightness = dot(lightning, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 1.0)
+        brightColor = vec4(lightning, 1.0);
+    else
+        brightColor = vec4(vec3(0.0), 1.0);
+    color = vec4(lightning, 1.0f);
 
     // For test vectors
     //color = vec4(specular, 1.0f);
+	//color = vec4(material.diffuse, 1.0f);
+	//color = vec4(light.diffuse, 1.0f);
 }
 
