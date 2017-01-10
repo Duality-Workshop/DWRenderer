@@ -1,6 +1,7 @@
-//out vec4 color;
 layout (location=0) out vec4 color;
 layout (location=1) out vec4 brightColor;
+
+// TODO : deffered-shading
 
 in vec3 Normal;
 in vec3 FragPos;

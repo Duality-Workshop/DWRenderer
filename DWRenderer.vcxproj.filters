@@ -154,6 +154,12 @@
     <None Include="shaders\hdr_effects.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="shaders\ssao.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\ssao.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\awesomeface.png">

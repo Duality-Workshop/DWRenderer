@@ -79,6 +79,8 @@
     <None Include="shaders\hdr_effects.vert" />
     <None Include="shaders\light.frag" />
     <None Include="shaders\light.vert" />
+    <None Include="shaders\ssao.frag" />
+    <None Include="shaders\ssao.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Astroboy\boy_10.png" />

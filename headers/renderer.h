@@ -28,7 +28,11 @@ public:
     void initializeRenderer();
     void render(glm::mat4 view, glm::mat4 projection);
     void bindMatrix(ShaderProgram* shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
-	std::vector<Texture*> createTextures(int nbTexturesToCreate);
+	// TODO : create file Utils
+	Texture* createTexture(void* data, int width, int height, GLenum target, GLenum type, GLenum formatImg, GLenum format, GLenum filtering);
+	std::vector<Texture*> Renderer::createTextures(int nbTexturesToCreate, void* data, int width, int height, 
+												GLenum target, GLenum type, GLenum formatImg, GLenum format, GLenum filtering);
+	GLfloat lerp(GLfloat a, GLfloat b, GLfloat f);
     void freeMemory();
     void reload();
     Camera *getCamera() const;
@@ -53,17 +57,27 @@ private:
     Camera *m_camera;
 
 	// For HDR and effects
-	ShaderProgram *m_hdrShader;
-	ShaderProgram *m_blurShader;
+		// HDR
+	ShaderProgram *m_HDRShader;
 	GLuint m_nbColorBuffers;
 	std::vector<Texture*> m_colorbuffers;
 	GLboolean m_hdr;
 	GLfloat m_exposure;
+		// Bloom
+	ShaderProgram *m_blurShader;
 	GLboolean m_bloom;
 	GLboolean m_horizontal;
 	GLuint m_amount;
 	GLuint m_pingPongFBO[2];
 	std::vector<Texture*> m_pingPongBuffers;
+	/*	// SSAO
+	ShaderProgram *m_SSAOShader;
+	GLuint m_ssaoFBO;
+	Texture *m_ssaoColorBuffer;
+	std::vector<glm::vec3> m_ssaoKernel;
+	GLuint m_nbSamples;
+	std::vector<glm::vec3> m_ssaoNoise;
+	glm::vec2 m_noiseScale;*/
 
     // For the scene
 	Shapes *m_shapes;

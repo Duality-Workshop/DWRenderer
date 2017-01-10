@@ -164,7 +164,7 @@ void Model::loadMaterialTextures(aiMaterial *mat, Mesh *mesh, aiTextureType type
 		}
 		catch (std::out_of_range& e) {
 			Texture *texture = new Texture(m_directory);
-			if (texture->loadFromFile("/" + name, GL_TEXTURE_2D)) {
+			if (texture->loadFromFile("/" + name, GL_TEXTURE_2D, GL_NEAREST)) {
 				texture->setName(name);
 				this->m_material->addTexture(name, texture);
 				this->m_material->addTextureTypeName(typeName, name);
