@@ -2,7 +2,7 @@
 
 ### Description
 
-3D engine handmade.
+3D engine handmade. Currently in development.
 
 Techs used :
 * C++14
