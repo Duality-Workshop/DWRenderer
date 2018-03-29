@@ -24,12 +24,8 @@ RenderingWidget::RenderingWidget(const QGLFormat & format, QWidget * parent)
     m_screenWidth = 800;
     m_screenHeight = 600;
     m_fullscreen = false;
-    m_wireframe = false;
 
-    // Camera & Events for movement => Move to renderer
-    m_camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
-    m_camera->setSpeed(5.0f);
-    m_camera->setMouseSensitivity(0.5f);
+    // Events for movement
     m_time = new QTime();
     m_mouseMoved = false;
     m_rightClickPressed = false;
@@ -38,25 +34,23 @@ RenderingWidget::RenderingWidget(const QGLFormat & format, QWidget * parent)
 }
 
 void RenderingWidget::initializeGL() {
-    m_renderer = new Renderer(m_screenWidth,m_screenHeight,m_camera);
+    m_renderer = std::make_unique<MainRenderer>(m_screenWidth,m_screenHeight);
     m_renderer->initializeRenderer();
 
     // Timer for framerate
     m_deltaTime = 0.0f;
     m_lastFrame = 0.0f;
     m_time->start();
-
-    // Wireframe mode on false by default
-    m_wireframe = false;
 }
 
 void RenderingWidget::resizeGL(int w, int h) {
     m_screenWidth = w;
     m_screenHeight = h;
+	// Resize
     m_renderer->setWidth(w);
     m_renderer->setHeight(h);
     m_renderer->initializeRenderer();
-    m_camera->initCamera();
+	m_renderer->getCamera()->initCamera();
     this->updateGL();
 }
 
@@ -67,17 +61,13 @@ void RenderingWidget::paintGL() {
     m_lastFrame = currentFrame;
     // Movement
     if (m_mouseMoved)
-        m_camera->processMouseMovement(m_xoffset, m_yoffset);
+		m_renderer->getCamera()->processMouseMovement(m_xoffset, m_yoffset);
     else
-        m_camera->processMouseMovement(0, 0);
-    m_camera->updateCamera(m_deltaTime);
-
-    // Matrix
-    m_view = m_camera->getViewMatrix();
-    m_projection = glm::perspective(glm::radians(m_camera->getFov()), (GLfloat)m_screenWidth / (GLfloat)m_screenHeight, 0.1f, 100.0f);
+		m_renderer->getCamera()->processMouseMovement(0, 0);
+	m_renderer->getCamera()->updateCamera(m_deltaTime);
 
     // Rendering
-    m_renderer->render(m_view, m_projection);
+    m_renderer->draw();
     m_mouseMoved = false;
     ++m_fps;
 }
@@ -102,15 +92,14 @@ void RenderingWidget::keyPressEvent(QKeyEvent *e) {
         break;
 
         case Qt::Key_W:
-            if(!m_wireframe){
-                m_wireframe = true;
-                std::cout << "Wireframe on" << std::endl;
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            } else {
-                m_wireframe = false;
-                std::cout << "Wireframe off" << std::endl;
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            }
+			if (!m_renderer->getWireframe()) {
+				std::cout << "Wireframe on" << std::endl;
+				m_renderer->setWireframe(true);
+			}
+			else {
+				std::cout << "Wireframe off" << std::endl;
+				m_renderer->setWireframe(false);
+			}
         break;
 
 		case Qt::Key_H:

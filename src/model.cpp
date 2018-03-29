@@ -5,6 +5,9 @@
 #include <iostream>
 #include <algorithm>
 
+Model::Model() {
+}
+
 Model::Model(std::string path) {
 	this->loadModel(path);
 }
@@ -172,6 +175,14 @@ void Model::loadMaterialTextures(aiMaterial *mat, Mesh *mesh, aiTextureType type
 			}
 		}
 	}
+}
+
+void Model::addMesh(Mesh mesh) {
+	m_meshes.push_back(mesh);
+}
+
+void Model::setMaterial(Material *mat) {
+	m_material = mat;
 }
 
 glm::mat4 Model::aiToGLM(const aiMatrix4x4 &mat) {

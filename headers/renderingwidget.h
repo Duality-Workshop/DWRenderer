@@ -1,7 +1,9 @@
 #ifndef RENDERINGWIDGET_H
 #define RENDERINGWIDGET_H
 
-#include "renderer.h"
+#include "mainrenderer.h"
+
+#include "dwtypedef.h"
 
 #include <QtOpenGL/QGLWidget>
 #include <QTimer>
@@ -33,11 +35,8 @@ private:
     GLfloat m_deltaTime;
     GLfloat m_lastFrame;
 
-    // Renderer & Camera(s)
-    Camera* m_camera;
-    glm::mat4 m_view;
-    glm::mat4 m_projection;
-    Renderer* m_renderer;
+    // Renderer
+	MainRendererUniquePtr m_renderer;
 
     // Movement
     GLfloat m_lastX;
@@ -51,7 +50,6 @@ private:
     GLuint m_screenWidth;
     GLuint m_screenHeight;
     bool m_fullscreen;
-    bool m_wireframe;
 
 public slots:
     void showFps();

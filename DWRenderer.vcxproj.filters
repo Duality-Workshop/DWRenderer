@@ -58,9 +58,6 @@
     <ClCompile Include="src\material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\renderingwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -88,15 +85,15 @@
     <ClCompile Include="src\shapes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\mainrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\shader.h">
@@ -120,6 +117,12 @@
     <ClInclude Include="headers\shapes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\mainrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\dwtypedef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="headers\renderingwidget.h">
@@ -139,9 +142,6 @@
     <None Include="shaders\base.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="Resources\Astroboy\astroboy.dae">
-      <Filter>Resource Files\Models\Astroboy</Filter>
-    </None>
     <None Include="shaders\blur.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
@@ -159,6 +159,9 @@
     </None>
     <None Include="shaders\ssao.vert">
       <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Models\Astroboy\astroboy.dae">
+      <Filter>Resource Files\Models\Astroboy</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

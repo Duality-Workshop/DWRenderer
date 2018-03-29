@@ -19,11 +19,14 @@
 class Model
 {
 public:
+	Model();
 	Model(std::string path);
 	~Model();
 
 	void Draw();
 	Material *material() const;
+	void addMesh(Mesh mesh);
+	void setMaterial(Material *mat);
 
 private:
 	std::vector<Mesh> m_meshes;

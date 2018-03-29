@@ -1,5 +1,5 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#ifndef MAINRENDERER_H
+#define MAINRENDERER_H
 
 #include "opengl.h"
 
@@ -19,22 +19,24 @@
 #include "model.h"
 #include "shapes.h"
 
-class Renderer
+class MainRenderer
 {
 public:
-    Renderer(GLuint width, GLuint height, Camera *camera);
-    ~Renderer();
+    MainRenderer(GLuint width, GLuint height);
+    ~MainRenderer();
 
     void initializeRenderer();
-    void render(glm::mat4 view, glm::mat4 projection);
+    void draw();
     void bindMatrix(ShaderProgram* shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 	// TODO : create file Utils
 	Texture* createTexture(void* data, int width, int height, GLenum target, GLenum type, GLenum formatImg, GLenum format, GLenum filtering);
-	std::vector<Texture*> Renderer::createTextures(int nbTexturesToCreate, void* data, int width, int height, 
+	std::vector<Texture*> MainRenderer::createTextures(int nbTexturesToCreate, void* data, int width, int height, 
 												GLenum target, GLenum type, GLenum formatImg, GLenum format, GLenum filtering);
 	GLfloat lerp(GLfloat a, GLfloat b, GLfloat f);
     void freeMemory();
     void reload();
+	GLboolean getWireframe();
+	void setWireframe(GLboolean wireframe);
     Camera *getCamera() const;
     void setCamera(Camera *camera);
     void setWidth(const GLfloat w);
@@ -56,7 +58,14 @@ private:
     GLuint m_screenHeight;
     Camera *m_camera;
 
+	// Matrix
+	glm::mat4 m_view;
+	glm::mat4 m_projection;
+	glm::mat4 m_modelMatrix;
+
 	// For HDR and effects
+		// Wireframe
+	GLboolean m_wireframe;
 		// HDR
 	ShaderProgram *m_HDRShader;
 	GLuint m_nbColorBuffers;
@@ -90,5 +99,5 @@ private:
     std::vector<Light*> m_lights;
 };
 
-#endif // RENDERER_H
+#endif // MAINRENDERER_H
 

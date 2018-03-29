@@ -1,4 +1,4 @@
-#include "renderer.h"
+#include "mainrenderer.h"
 
 #include <iostream>
 //#include <random> -- For SSAO
@@ -9,16 +9,19 @@
  * -- Scene graph
  */
 
-Renderer::Renderer(GLuint width, GLuint height, Camera *camera){
+MainRenderer::MainRenderer(GLuint width, GLuint height){
     m_screenWidth = width;
     m_screenHeight = height;
-    m_camera = camera;
+	m_camera = new Camera(glm::vec3(0.0f, 0.0f, 10.0f));
+	m_camera->setSpeed(5.0f);
+	m_camera->setMouseSensitivity(0.5f);
+	m_projection = glm::perspective(glm::radians(m_camera->getFov()), (GLfloat)m_screenWidth / (GLfloat)m_screenHeight, 0.1f, 100.0f);
 }
 
-Renderer::~Renderer(){
+MainRenderer::~MainRenderer(){
 }
 
-void Renderer::initializeRenderer() {
+void MainRenderer::initializeRenderer() {
     // Display
     glViewport(0, 0, m_screenWidth, m_screenHeight);
     glEnable(GL_DEPTH_TEST);
@@ -31,9 +34,9 @@ void Renderer::initializeRenderer() {
 	else
 		std::cout << "GLEW\t\tOK" << std::endl;
 #endif
-	
+
 	// Object(s)
-	m_model = new Model("Resources/Astroboy/astroboy.dae");
+	m_model = new Model("Resources/Models/Astroboy/astroboy.dae");
 	m_shapes = new Shapes();
 	
 	// Light(s)
@@ -94,6 +97,7 @@ void Renderer::initializeRenderer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	
 		// For hdr and effects
+	m_wireframe = false;
 	m_hdr = false;
 	m_exposure = 1.0f;
 	m_bloom = false;
@@ -156,21 +160,24 @@ void Renderer::initializeRenderer() {
 	m_noiseScale = glm::vec2(GLfloat(m_screenWidth) / 4.0, GLfloat(m_screenHeight) / 4.0);*/
 }
 
-void Renderer::render(glm::mat4 view, glm::mat4 projection) {
+void MainRenderer::draw()
+{
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	// 1 - Draw the scene into the floating point framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// Matrix
+	m_view = m_camera->getViewMatrix();
 		// Draw lights
 	m_lightShader->useShaderProgram();
-	glm::mat4 modelMatrix = glm::mat4();
+	m_modelMatrix = glm::mat4();
 	for (int i = 0; i < m_nbLights; ++i) {
-		modelMatrix = glm::translate(modelMatrix, m_lights[i]->position());
-		modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
-		this->bindMatrix(m_lightShader, modelMatrix, view, projection);
+		m_modelMatrix = glm::translate(m_modelMatrix, m_lights[i]->position());
+		m_modelMatrix = glm::scale(m_modelMatrix, glm::vec3(0.2f));
+		this->bindMatrix(m_lightShader, m_modelMatrix, m_view, m_projection);
 		m_lightShader->setUniform("lightColor", m_lights[i]->diffuse());
 		m_shapes->renderCube();
-		modelMatrix = glm::mat4();
+		m_modelMatrix = glm::mat4();
 	}
 
 		// SSAO - Don't work in forward-shading (Change for deffered-shading)
@@ -189,8 +196,8 @@ void Renderer::render(glm::mat4 view, glm::mat4 projection) {
     m_baseShader->useShaderProgram();
 	for(int i = 0; i < m_nbLights; ++i)
 		m_lights[i]->bind(m_baseShader, i);
-    modelMatrix = glm::mat4();
-    this->bindMatrix(m_baseShader, modelMatrix, view, projection);
+    m_modelMatrix = glm::mat4();
+    this->bindMatrix(m_baseShader, m_modelMatrix, m_view, m_projection);
 		// Bind all attributes of the material in the shader
 	m_model->material()->bind(m_baseShader);
 		// Draw the model
@@ -224,7 +231,7 @@ void Renderer::render(glm::mat4 view, glm::mat4 projection) {
 	m_shapes->renderQuad();
 }
 
-void Renderer::bindMatrix(ShaderProgram* shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
+void MainRenderer::bindMatrix(ShaderProgram* shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
     glm::mat3 normalMatrix;
     normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
     shader->setUniform("normalMatrix", normalMatrix);
@@ -234,7 +241,7 @@ void Renderer::bindMatrix(ShaderProgram* shader, glm::mat4 model, glm::mat4 view
 }
 
 // TODO : file for Utils
-Texture* Renderer::createTexture(void* data, int width, int height, GLenum target,
+Texture* MainRenderer::createTexture(void* data, int width, int height, GLenum target,
 							GLenum type, GLenum formatImg, GLenum format, GLenum filtering) {
 	Texture* tex = new Texture();
 	tex->setWidth(width);
@@ -246,7 +253,7 @@ Texture* Renderer::createTexture(void* data, int width, int height, GLenum targe
 	return tex;
 }
 
-std::vector<Texture*> Renderer::createTextures(int nbTexturesToCreate, void* data, int width, int height, 
+std::vector<Texture*> MainRenderer::createTextures(int nbTexturesToCreate, void* data, int width, int height, 
 									GLenum target, GLenum type, GLenum formatImg, GLenum format, GLenum filtering) {
 	std::vector<Texture*> textures;
 	Texture* tex_temp;
@@ -263,15 +270,15 @@ std::vector<Texture*> Renderer::createTextures(int nbTexturesToCreate, void* dat
 	return textures;
 }
 
-GLfloat Renderer::lerp(GLfloat a, GLfloat b, GLfloat f) {
+GLfloat MainRenderer::lerp(GLfloat a, GLfloat b, GLfloat f) {
 	return a + f * (b - a);
 }
 
-void Renderer::freeMemory() {
+void MainRenderer::freeMemory() {
 	m_shapes->free();
 }
 
-void Renderer::reload() { // TODO : list of ShaderProgram*
+void MainRenderer::reload() { // TODO : list of ShaderProgram*
     m_baseShader->reload();
 	m_lightShader->reload();
 	m_HDRShader->reload();
@@ -279,43 +286,55 @@ void Renderer::reload() { // TODO : list of ShaderProgram*
 	//m_SSAOShader->reload();
 }
 
-Camera *Renderer::getCamera() const {
+GLboolean MainRenderer::getWireframe() {
+	return m_wireframe;
+}
+
+void MainRenderer::setWireframe(GLboolean wireframe) {
+	m_wireframe = wireframe;
+	if (wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+Camera *MainRenderer::getCamera() const {
     return m_camera;
 }
 
-void Renderer::setCamera(Camera *camera) {
+void MainRenderer::setCamera(Camera *camera) {
     m_camera = camera;
 }
 
-void Renderer::setWidth(const GLfloat w) {
+void MainRenderer::setWidth(const GLfloat w) {
     m_screenWidth = w;
 }
 
-void Renderer::setHeight(const GLfloat h) {
+void MainRenderer::setHeight(const GLfloat h) {
     m_screenHeight = h;
 }
 
-GLboolean Renderer::getHdr() const {
+GLboolean MainRenderer::getHdr() const {
 	return m_hdr;
 }
 
-void Renderer::setHdr(GLboolean hdr) {
+void MainRenderer::setHdr(GLboolean hdr) {
 	m_hdr = hdr;
 }
 
-GLfloat Renderer::getExposure() const {
+GLfloat MainRenderer::getExposure() const {
 	return m_exposure;
 }
 
-void Renderer::setExposure(GLfloat exposure) {
+void MainRenderer::setExposure(GLfloat exposure) {
 	m_exposure = exposure;
 }
 
-GLuint Renderer::colorBuffers() const {
+GLuint MainRenderer::colorBuffers() const {
 	return m_nbColorBuffers;
 }
 
-void Renderer::setColorBuffers(GLuint val) {
+void MainRenderer::setColorBuffers(GLuint val) {
 	if (val > 14)
 		val = 14;
 	if (val < 0)
@@ -323,18 +342,18 @@ void Renderer::setColorBuffers(GLuint val) {
 	m_nbColorBuffers = val;
 }
 
-GLboolean Renderer::bloom() const {
+GLboolean MainRenderer::bloom() const {
 	return m_bloom;
 }
 
-void Renderer::setBloom(GLboolean val) {
+void MainRenderer::setBloom(GLboolean val) {
 	m_bloom = val;
 }
 
-GLuint Renderer::nbLights() const {
+GLuint MainRenderer::nbLights() const {
 	return m_nbLights;
 }
 
-void Renderer::setNbLights(GLuint val) {
+void MainRenderer::setNbLights(GLuint val) {
 	m_nbLights = val;
 }
