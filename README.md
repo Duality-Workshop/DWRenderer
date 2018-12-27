@@ -14,5 +14,4 @@ Techs used :
 * Assimp 3.x.x
 
 ### Using
-
-Run on Windows with the .sln file. For Linux, use CMakeLists.txt.
+Don't run anymore. I work on a new engine starting from scratch. Always for personnal experiments. :)
