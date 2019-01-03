@@ -2,7 +2,7 @@
 
 ### Description
 
-Little 3D engine handmade as a student
+Little 3D engine handmade as a student project.
 
 Techs used :
 * C++14
