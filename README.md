@@ -17,4 +17,4 @@ Techs used :
 
 Just download the demo.zip archive and launch the executable (Windows only)
 
-Not sure if he compiling. I work on a new engine starting from scratch. Always for personnal experiments. :)
+Not sure if the project can be compile. I work on a new engine starting from scratch. Always for personnal experiments. :)
