@@ -14,4 +14,7 @@ Techs used :
 * Assimp 3.x.x
 
 ### Using
-Don't run anymore. I work on a new engine starting from scratch. Always for personnal experiments. :)
+
+Just download the demo.zip archive and launch the executable (Windows only)
+
+Not sure if he compiling. I work on a new engine starting from scratch. Always for personnal experiments. :)
